@@ -12,13 +12,12 @@ public class Block : MonoBehaviour
     private Renderer visualRenderer;
     private Coroutine bounce;
 
-    private void Awake()
-    {
-        visualRenderer = visual.GetComponent<Renderer>();
-    }
+    // 다른 오브젝트의 Awake에서 먼저 호출될 수 있으므로 Awake 순서에 기대지 않고 처음 쓸 때 가져온다.
+    private Renderer VisualRenderer => visualRenderer != null ? visualRenderer : visualRenderer = visual.GetComponent<Renderer>();
 
     public void Paint(Color color)
     {
+        Renderer visualRenderer = VisualRenderer;
         var props = new MaterialPropertyBlock();
         visualRenderer.GetPropertyBlock(props);
         props.SetColor(BaseColorId, color);
